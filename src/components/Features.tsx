@@ -18,7 +18,12 @@ import {
   Mic,
   Video,
   Users,
-  Settings
+  Settings,
+  Workflow,
+  BarChart,
+  MessageSquare,
+  Smartphone,
+  Cpu
 } from "lucide-react";
 
 export default function OmnifierFeatures({ features }: { features?: any }) {
@@ -36,71 +41,71 @@ export default function OmnifierFeatures({ features }: { features?: any }) {
     features ||
     [
       {
-        title: "Unified Hub",
-        desc: "All your tools, unified. Switch contexts instantly.",
-        longDesc: "Seamlessly integrate all your development tools in one powerful interface. Switch between projects, manage workflows, and access everything you need without context switching.",
-        icon: <Layers className="w-8 h-8" />,
-        color: "from-blue-400 to-cyan-400",
-        bgColor: "from-blue-500/20 to-cyan-500/20",
-        delay: 0.1,
-        status: "Live",
-        features: ["Multi-tool", "Context Switch", "Workflow"]
-      },
-      {
-        title: "Smart Automations",
-        desc: "Create flows that run when you need them — without code.",
-        longDesc: "Build powerful automation workflows with our visual flow builder. No coding required - just drag, drop, and deploy. Automate repetitive tasks and focus on what matters.",
-        icon: <Zap className="w-8 h-8" />,
-        color: "from-yellow-400 to-orange-400",
-        bgColor: "from-yellow-500/20 to-orange-500/20",
-        delay: 0.2,
-        status: "Beta",
-        features: ["Visual Builder", "No Code", "Triggers"]
-      },
-      {
-        title: "Cosmic Insights",
-        desc: "Analytics that shine a light on what matters.",
-        longDesc: "Get deep insights into your development patterns, productivity metrics, and project health. Make data-driven decisions with beautiful, interactive dashboards.",
-        icon: <Sparkles className="w-8 h-8" />,
-        color: "from-purple-400 to-pink-400",
-        bgColor: "from-purple-500/20 to-pink-500/20",
-        delay: 0.3,
-        status: "Live",
-        features: ["Analytics", "Dashboards", "Metrics"]
-      },
-      {
-        title: "Launchpad",
-        desc: "Deploy changes and features with one click.",
-        longDesc: "Deploy your applications to any cloud provider with our one-click deployment system. Manage environments, monitor performance, and scale automatically.",
-        icon: <Rocket className="w-8 h-8" />,
-        color: "from-green-400 to-emerald-400",
-        bgColor: "from-green-500/20 to-emerald-500/20",
-        delay: 0.4,
-        status: "Live",
-        features: ["One-Click Deploy", "Cloud", "Auto-Scale"]
-      },
-      {
-        title: "Voice Assistant",
-        desc: "Control everything with your voice commands.",
-        longDesc: "Interact with your development environment using natural language. Ask questions, execute commands, and get instant responses from our AI-powered voice assistant.",
-        icon: <Mic className="w-8 h-8" />,
-        color: "from-indigo-400 to-purple-400",
-        bgColor: "from-indigo-500/20 to-purple-500/20",
-        delay: 0.5,
-        status: "Coming Soon",
-        features: ["Voice Control", "AI", "Natural Language"]
-      },
-      {
-        title: "Team Collaboration",
-        desc: "Work together seamlessly across teams.",
-        longDesc: "Collaborate in real-time with your team members. Share screens, code together, and stay synchronized with live updates and notifications.",
-        icon: <Users className="w-8 h-8" />,
-        color: "from-pink-400 to-rose-400",
-        bgColor: "from-pink-500/20 to-rose-500/20",
-        delay: 0.6,
-        status: "Live",
-        features: ["Real-time", "Screen Share", "Notifications"]
-      }
+  title: "WebRTC Meets",
+  desc: "Secure video & screen sharing.",
+  longDesc: "Connect instantly with 1:1 or group video calls using WebRTC technology. Share screens, chat in real-time, and collaborate securely without third-party tools.",
+  icon: <Video className="w-8 h-8" />,
+  color: "from-blue-400 to-cyan-400",
+  bgColor: "from-blue-500/20 to-cyan-500/20",
+  delay: 0.3,
+  status: "Beta",
+  features: ["Group Calls", "Screen Share", "P2P Secure"]
+},
+{
+  title: "AI & Automation",
+  desc: "Smarter workflows with AI.",
+  longDesc: "Leverage artificial intelligence for smarter decision-making and workflow automation. From predictive analytics to intelligent bots, Omnifier is AI-first.",
+  icon: <Cpu className="w-8 h-8" />,
+  color: "from-red-400 to-rose-400",
+  bgColor: "from-red-500/20 to-rose-500/20",
+  delay: 0.9,
+  status: "Live",
+  features: ["Predictive Analytics", "Intelligent Bots", "Workflow Automation"]
+},
+{
+  title: "Smart Chat",
+  desc: "Context-aware AI messaging.",
+  longDesc: "Engage in intelligent AI-driven chats with contextual understanding. Integrates with WhatsApp and system chat for seamless communication.",
+  icon: <MessageSquare className="w-8 h-8" />,
+  color: "from-teal-400 to-emerald-400",
+  bgColor: "from-teal-500/20 to-emerald-500/20",
+  delay: 0.6,
+  status: "Live",
+  features: ["AI-Powered", "WhatsApp Integration", "Context-Aware"]
+},
+{
+  title: "Website Development",
+  desc: "Modern & scalable websites.",
+  longDesc: "Design and build stunning websites with Omnifier. From landing pages to enterprise portals, we deliver responsive, SEO-friendly, and fast solutions.",
+  icon: <Globe className="w-8 h-8" />,
+  color: "from-green-400 to-emerald-400",
+  bgColor: "from-green-500/20 to-emerald-500/20",
+  delay: 0.7,
+  status: "Live",
+  features: ["Responsive Design", "SEO Optimized", "Fast & Secure"]
+},
+{
+  title: "App Development",
+  desc: "Mobile & desktop apps.",
+  longDesc: "Build powerful mobile and desktop applications tailored to your business. From native apps to cross-platform solutions, Omnifier covers it all.",
+  icon: <Smartphone className="w-8 h-8" />,
+  color: "from-indigo-400 to-blue-400",
+  bgColor: "from-indigo-500/20 to-brown-500/20",
+  delay: 0.8,
+  status: "Planned",
+  features: ["iOS & Android", "Cross-Platform", "Custom Solutions"]
+},
+{
+  title: "Backup & Restore",
+  desc: "Your data, always safe.",
+  longDesc: "Automatically back up your important data to the cloud. Restore any version in one click with enterprise-grade encryption and reliability.",
+  icon: <Cloud className="w-8 h-8" />,
+  color: "from-indigo-400 to-purple-400",
+  bgColor: "from-indigo-500/20 to-purple-500/20",
+  delay: 1.0,
+  status: "Planned",
+  features: ["Auto Backup", "One-Click Restore", "Encrypted Security"]
+}
     ];
 
   return (

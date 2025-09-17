@@ -104,7 +104,7 @@ export default function FFmpegFeatures() {
   ];
 
   return (
-    <section className="relative py-20 px-4 sm:px-6 lg:px-8 gradient-bg overflow-hidden">
+    <section className="relative py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-[#0f0f23] via-[#1a1a2e] to-[#16213e] overflow-hidden">
       {/* Different Background Effects */}
       <div className="absolute inset-0 -z-20">
         {/* Interactive Background */}
@@ -269,18 +269,18 @@ export default function FFmpegFeatures() {
             </div>
 
             {/* Action Button */}
-            <Link href="/portfolio#contact" passHref legacyBehavior>
+            <Link href="/contact" passHref legacyBehavior>
               <motion.a
-                whileHover={{ scale: 1.05, y: -2 }}
-                whileTap={{ scale: 0.95 }}
-                className="group relative px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold rounded-full shadow-2xl overflow-hidden cursor-pointer"
-              >
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                <div className="relative flex items-center gap-3">
-                  <Download className="w-5 h-5" />
-                  Get Started
-                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
-                </div>
+              whileHover={{ scale: 1.05, y: -2 }}
+              whileTap={{ scale: 0.95 }}
+                className="group relative px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold rounded-full shadow-2xl overflow-hidden cursor-pointer inline-block"
+            >
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              <div className="relative flex items-center gap-3">
+                <Download className="w-5 h-5" />
+                Get Started
+                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
+              </div>
               </motion.a>
             </Link>
           </motion.div>

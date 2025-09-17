@@ -277,17 +277,17 @@ const Hero = () => {
               {/* Main Heading */}
               <div className="space-y-6">
                 <h1 className="text-5xl lg:text-7xl font-black leading-tight tracking-wider">
-                  <span className="bg-gradient-to-r from-pink-400 via-purple-500 to-cyan-400 bg-clip-text text-transparent animate-text-glow">
-                    Omnifier AI
+                  <span className="bg-gradient-to-r from-pink-400 via-purple-500 to-cyan-400 bg-clip-text text-transparent animate-text-glow animate-word-spacing">
+                    Omnifier 
                   </span>
                   <br />
                   <span className="text-white animate-word-spacing">
-                    Voice Assistant
+                    Code 
                   </span>
                 </h1>
                 
                 <p className="text-base lg:text-lg text-gray-300 font-light max-w-lg mx-auto lg:mx-0 leading-relaxed tracking-wide animate-slide-in-up" style={{animationDelay: '0.3s'}}>
-                  Experience the future of artificial intelligence with our advanced voice assistant technology
+                  Experience the future of artificial intelligence with our advanced Ai assistant technology
                 </p>
               </div>
 
@@ -478,12 +478,14 @@ const Hero = () => {
                   
                   {/* Central AI Symbol */}
                   <div className="relative z-10 text-center">
-                    <div className="w-16 h-16 mx-auto mb-3 bg-gradient-to-br from-purple-400 via-pink-400 to-cyan-400 rounded-full flex items-center justify-center">
-                      <svg className="w-8 h-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-                      </svg>
+                    <div className="w-16 h-16 mx-auto mb-3 bg-gradient-to-br from-purple-400 via-pink-400 to-cyan-400 rounded-full flex items-center justify-center overflow-hidden">
+                      <img 
+                        src="/pic2.png" 
+                        alt="AI Brain" 
+                        className="w-12 h-12 object-cover rounded-full"
+                      />
                     </div>
-                    <div className="text-sm font-semibold text-white/80">AI Core</div>
+                    <div className="text-sm font-semibold text-white/80">Omnifier</div>
                   </div>
                 </div>
                 
@@ -566,11 +568,11 @@ const Hero = () => {
 
       {/* Side Decorative Elements */}
       <div className="absolute top-1/2 left-8 transform -translate-y-1/2 opacity-10 pointer-events-none hidden lg:block">
-        <div className="text-6xl font-black text-purple-900/50 transform -rotate-90">AI</div>
+        <div className="text-6xl font-black text-purple-900/50 transform -rotate-90">Omnifier</div>
       </div>
 
       <div className="absolute top-1/2 right-8 transform -translate-y-1/2 opacity-10 pointer-events-none hidden lg:block">
-        <div className="text-6xl font-black text-purple-900/50 transform rotate-90">2024</div>
+        <div className="text-6xl font-black text-purple-900/50 transform rotate-90">2025</div>
       </div>
     </section>
   );

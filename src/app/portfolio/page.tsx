@@ -387,7 +387,7 @@ export default function PortfolioPage() {
             whileTap={{ scale: 0.95 }}
             className="px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-semibold rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
             onClick={() => {
-              window.location.href = '/login';
+              window.location.href = '/contact';
             }}
           >
             Get Started
@@ -408,14 +408,14 @@ export default function PortfolioPage() {
             >
               <h1 className="text-5xl lg:text-7xl font-bold leading-tight">
                 <span className="bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
-                  Voice AI & Automatic AI
+                  AI & Automatic AI
                 </span>
                 <br />
-                <span className="text-white">Revolutionary Technology</span>
+                <span className="text-white">Professional Solutions</span>
               </h1>
               
               <p className="text-xl text-gray-300 leading-relaxed max-w-2xl">
-                Experience the future with Professor Bot - our advanced voice AI assistant and automatic AI system that understands, processes, and executes commands with unprecedented intelligence and precision.
+                Discover our comprehensive AI portfolio featuring advanced machine learning models, automatic AI systems, and professional-grade code implementations that power intelligent automation and decision-making.
               </p>
               
               <motion.button
@@ -425,8 +425,8 @@ export default function PortfolioPage() {
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 <div className="relative flex items-center gap-3">
-                  <Mic className="w-6 h-6" />
-                  Activate Voice AI
+                  <Code className="w-6 h-6" />
+                  View AI Portfolio
                   <ArrowRight className="w-6 h-6 group-hover:translate-x-1 transition-transform duration-300" />
                 </div>
               </motion.button>
@@ -528,32 +528,32 @@ export default function PortfolioPage() {
           >
             <h2 className="text-4xl lg:text-6xl font-bold mb-6">
               <span className="bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
-                Voice AI Features
+                AI & Code Features
               </span>
             </h2>
             <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
-              Advanced voice recognition, natural language processing, and automatic AI capabilities that revolutionize how you interact with technology and automate complex tasks.
+              Professional AI implementations, machine learning models, and automatic AI systems with clean, production-ready code that powers intelligent automation and decision-making.
             </p>
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
               {
-                icon: <Mic className="w-8 h-8" />,
-                title: "Voice Recognition",
-                description: "Advanced speech recognition with 99.9% accuracy, supporting 50+ languages and real-time voice processing with noise cancellation.",
+                icon: <Brain className="w-8 h-8" />,
+                title: "Machine Learning Models",
+                description: "Advanced neural networks, deep learning algorithms, and AI models with 99.9% accuracy for predictive analytics and intelligent decision-making.",
                 color: "from-cyan-400 to-blue-400"
               },
               {
-                icon: <Brain className="w-8 h-8" />,
-                title: "Automatic AI Processing",
-                description: "Intelligent neural networks that automatically process commands, make decisions, and execute complex tasks without human intervention.",
+                icon: <Cpu className="w-8 h-8" />,
+                title: "Automatic AI Systems",
+                description: "Self-learning AI systems that automatically process data, make decisions, and execute complex tasks without human intervention using advanced algorithms.",
                 color: "from-purple-400 to-pink-400"
               },
               {
-                icon: <Headphones className="w-8 h-8" />,
-                title: "Voice Synthesis",
-                description: "Natural voice generation with emotional intelligence, multiple voice options, and real-time conversation capabilities.",
+                icon: <Code className="w-8 h-8" />,
+                title: "Professional Code",
+                description: "Clean, scalable, and production-ready code implementations with comprehensive documentation, testing, and deployment strategies.",
                 color: "from-green-400 to-emerald-400"
               }
             ].map((feature, index) => (
@@ -592,7 +592,7 @@ export default function PortfolioPage() {
         </div>
       </section>
 
-      {/* Future is Collaborative Section */}
+      {/* AI Code Showcase Section */}
       <section id="revolution" className="relative py-20 px-6">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
@@ -606,16 +606,16 @@ export default function PortfolioPage() {
             >
               <h2 className="text-4xl lg:text-6xl font-bold">
                 <span className="bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
-                  Voice AI Revolution
+                  Professional AI Code
                 </span>
               </h2>
               
               <div className="space-y-6 text-lg text-gray-300 leading-relaxed">
                 <p>
-                  The future is voice-controlled. Professor Bot's advanced voice AI technology enables seamless human-machine interaction through natural conversation and automatic task execution.
+                  Our AI implementations feature clean, scalable code with advanced machine learning algorithms, neural networks, and automatic AI systems that power intelligent automation.
                 </p>
                 <p>
-                  Our automatic AI systems learn, adapt, and evolve, creating intelligent workflows that understand context, predict needs, and execute complex operations with minimal human input.
+                  Professional-grade code with comprehensive documentation, testing frameworks, and deployment strategies that ensure reliability, maintainability, and performance in production environments.
                 </p>
               </div>
               
@@ -625,13 +625,13 @@ export default function PortfolioPage() {
                 className="group px-8 py-4 bg-transparent border-2 border-purple-400 text-purple-400 font-semibold rounded-full hover:bg-purple-400/10 transition-colors duration-300"
               >
                 <div className="flex items-center gap-3">
-                  <Volume2 className="w-5 h-5" />
-                  Try Voice AI
+                  <Code className="w-5 h-5" />
+                  View Code Examples
                 </div>
               </motion.button>
             </motion.div>
 
-            {/* Right Visual - AI Network */}
+            {/* Right Visual - Code Showcase */}
             <motion.div
               initial={{ opacity: 0, x: 50 }}
               whileInView={{ opacity: 1, x: 0 }}
@@ -639,77 +639,97 @@ export default function PortfolioPage() {
               viewport={{ once: true }}
               className="relative flex items-center justify-center"
             >
-              <div className="relative w-96 h-96">
-                {/* AI Network Visualization */}
-                <div className="relative w-full h-full rounded-3xl overflow-hidden border-2 border-purple-400/30 shadow-2xl">
-                  <img
-                    src="/pic2.png"
-                    alt="AI Network"
-                    className="w-full h-full object-cover"
-                  />
+              <div className="relative w-full max-w-2xl">
+                {/* Code Editor Visualization */}
+                <div className="relative bg-gray-900/90 rounded-2xl border border-purple-400/30 shadow-2xl overflow-hidden">
+                  {/* Code Header */}
+                  <div className="flex items-center gap-2 px-4 py-3 bg-gray-800/50 border-b border-gray-700/50">
+                    <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+                    <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                    <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                    <span className="ml-4 text-gray-300 text-sm font-mono">ai_model.py</span>
+                  </div>
                   
-                  {/* Network Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-purple-500/20 to-pink-500/20" />
-                  
-                  {/* Floating Network Nodes */}
-                  {[...Array(8)].map((_, i) => (
-                    <motion.div
-                      key={i}
-                      className="absolute w-4 h-4 bg-purple-400 rounded-full"
-                      style={{
-                        left: `${20 + (i % 4) * 20}%`,
-                        top: `${20 + Math.floor(i / 4) * 30}%`,
-                      }}
-                      animate={{
-                        scale: [1, 1.5, 1],
-                        opacity: [0.5, 1, 0.5],
-                      }}
-                      transition={{
-                        duration: 2,
-                        repeat: Infinity,
-                        delay: i * 0.2,
-                      }}
-                    />
-                  ))}
-                  
-                  {/* Connecting Lines */}
-                  <svg className="absolute inset-0 w-full h-full">
-                    {[...Array(6)].map((_, i) => (
-                      <motion.line
-                        key={i}
-                        x1={`${20 + (i % 3) * 20}%`}
-                        y1={`${20 + Math.floor(i / 3) * 30}%`}
-                        x2={`${40 + (i % 3) * 20}%`}
-                        y2={`${50 + Math.floor(i / 3) * 30}%`}
-                        stroke="rgba(147, 51, 234, 0.6)"
-                        strokeWidth="2"
-                        strokeDasharray="5,5"
-                        animate={{
-                          pathLength: [0, 1, 0],
-                        }}
-                        transition={{
-                          duration: 3,
-                          repeat: Infinity,
-                          delay: i * 0.5,
-                        }}
-                      />
-                    ))}
-                  </svg>
+                  {/* Code Content */}
+                  <div className="p-6 font-mono text-sm">
+                    <div className="space-y-2">
+                      <div className="text-purple-400">
+                        <span className="text-gray-500">1</span> <span className="text-blue-400">import</span> <span className="text-green-400">tensorflow</span> <span className="text-blue-400">as</span> <span className="text-green-400">tf</span>
+                      </div>
+                      <div className="text-purple-400">
+                        <span className="text-gray-500">2</span> <span className="text-blue-400">import</span> <span className="text-green-400">numpy</span> <span className="text-blue-400">as</span> <span className="text-green-400">np</span>
+                      </div>
+                      <div className="text-purple-400">
+                        <span className="text-gray-500">3</span>
+                      </div>
+                      <div className="text-purple-400">
+                        <span className="text-gray-500">4</span> <span className="text-blue-400">class</span> <span className="text-yellow-400">AutomaticAI</span><span className="text-white">:</span>
+                      </div>
+                      <div className="text-purple-400">
+                        <span className="text-gray-500">5</span>     <span className="text-blue-400">def</span> <span className="text-yellow-400">__init__</span><span className="text-white">(</span><span className="text-blue-400">self</span><span className="text-white">,</span> <span className="text-blue-400">model_path</span><span className="text-white">):</span>
+                      </div>
+                      <div className="text-purple-400">
+                        <span className="text-gray-500">6</span>         <span className="text-blue-400">self</span><span className="text-white">.</span><span className="text-blue-400">model</span> <span className="text-white">=</span> <span className="text-green-400">tf.keras.models.load_model</span><span className="text-white">(</span><span className="text-blue-400">model_path</span><span className="text-white">)</span>
+                      </div>
+                      <div className="text-purple-400">
+                        <span className="text-gray-500">7</span>
+                      </div>
+                      <div className="text-purple-400">
+                        <span className="text-gray-500">8</span>     <span className="text-blue-400">def</span> <span className="text-yellow-400">predict</span><span className="text-white">(</span><span className="text-blue-400">self</span><span className="text-white">,</span> <span className="text-blue-400">data</span><span className="text-white">):</span>
+                      </div>
+                      <div className="text-purple-400">
+                        <span className="text-gray-500">9</span>         <span className="text-blue-400">return</span> <span className="text-blue-400">self</span><span className="text-white">.</span><span className="text-blue-400">model</span><span className="text-white">.</span><span className="text-green-400">predict</span><span className="text-white">(</span><span className="text-blue-400">data</span><span className="text-white">)</span>
+                      </div>
+                      <div className="text-purple-400">
+                        <span className="text-gray-500">10</span>
+                      </div>
+                      <div className="text-purple-400">
+                        <span className="text-gray-500">11</span> <span className="text-gray-500"># Automatic AI Processing</span>
+                      </div>
+                      <div className="text-purple-400">
+                        <span className="text-gray-500">12</span> <span className="text-blue-400">def</span> <span className="text-yellow-400">auto_process</span><span className="text-white">(</span><span className="text-blue-400">input_data</span><span className="text-white">):</span>
+                      </div>
+                      <div className="text-purple-400">
+                        <span className="text-gray-500">13</span>     <span className="text-blue-400">ai</span> <span className="text-white">=</span> <span className="text-yellow-400">AutomaticAI</span><span className="text-white">(</span><span className="text-green-400">'model.h5'</span><span className="text-white">)</span>
+                      </div>
+                      <div className="text-purple-400">
+                        <span className="text-gray-500">14</span>     <span className="text-blue-400">result</span> <span className="text-white">=</span> <span className="text-blue-400">ai</span><span className="text-white">.</span><span className="text-green-400">predict</span><span className="text-white">(</span><span className="text-blue-400">input_data</span><span className="text-white">)</span>
+                      </div>
+                      <div className="text-purple-400">
+                        <span className="text-gray-500">15</span>     <span className="text-blue-400">return</span> <span className="text-blue-400">result</span>
+                      </div>
+                    </div>
+                  </div>
                 </div>
 
-                {/* Background Glow */}
-                <motion.div
-                  className="absolute inset-0 rounded-full bg-gradient-to-br from-purple-500/20 to-pink-500/20 blur-2xl"
-                  animate={{
-                    scale: [1, 1.2, 1],
-                    opacity: [0.3, 0.6, 0.3],
-                  }}
-                  transition={{
-                    duration: 4,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                  }}
-                />
+                {/* Floating Code Elements */}
+                {[
+                  <Brain className="w-6 h-6" />,
+                  <Cpu className="w-6 h-6" />,
+                  <Code className="w-6 h-6" />,
+                  <Database className="w-6 h-6" />
+                ].map((icon, i) => (
+                  <motion.div
+                    key={i}
+                    className="absolute text-purple-400/60"
+                    style={{
+                      left: `${10 + i * 20}%`,
+                      top: `${-20 + (i % 2) * 40}%`,
+                    }}
+                    animate={{
+                      y: [0, -20, 0],
+                      rotate: [0, 360, 0],
+                      opacity: [0.3, 0.8, 0.3],
+                    }}
+                    transition={{
+                      duration: 4,
+                      repeat: Infinity,
+                      delay: i * 0.5,
+                    }}
+                  >
+                    {icon}
+                  </motion.div>
+                ))}
               </div>
             </motion.div>
           </div>
@@ -728,12 +748,12 @@ export default function PortfolioPage() {
           >
             <h2 className="text-4xl lg:text-6xl font-bold">
               <span className="bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
-                Voice AI Made Simple
+                AI Made Simple
               </span>
             </h2>
             
             <p className="text-xl text-gray-300 max-w-4xl mx-auto leading-relaxed">
-              Professor Bot's voice AI technology makes complex automation simple. Just speak naturally and watch as our automatic AI systems understand, process, and execute your commands with unprecedented accuracy and intelligence.
+              Our AI and automatic AI systems make complex automation simple. Advanced machine learning models, neural networks, and intelligent algorithms work together to understand, process, and execute tasks with unprecedented accuracy and efficiency.
             </p>
             
             <motion.button
@@ -742,8 +762,8 @@ export default function PortfolioPage() {
               className="group px-8 py-4 bg-transparent border-2 border-purple-400 text-purple-400 font-semibold rounded-full hover:bg-purple-400/10 transition-colors duration-300"
             >
               <div className="flex items-center gap-3">
-                <Mic className="w-5 h-5" />
-                Start Voice AI Trial
+                <Brain className="w-5 h-5" />
+                Explore AI Solutions
               </div>
             </motion.button>
           </motion.div>
@@ -759,10 +779,10 @@ export default function PortfolioPage() {
             <div className="relative p-8 rounded-3xl bg-gradient-to-br from-gray-900/80 to-purple-900/50 backdrop-blur-lg border border-purple-400/30 shadow-2xl">
               <div className="text-center space-y-6">
                 <h3 className="text-2xl font-bold text-white">
-                  Experience Professor Bot Today.
+                  Experience AI Today.
                 </h3>
                 <p className="text-gray-300 text-lg">
-                  Try our advanced voice AI technology for free. Experience the future of human-machine interaction with Professor Bot's intelligent voice recognition and automatic AI processing.
+                  Try our advanced AI and automatic AI technology for free. Experience the future of intelligent automation with our machine learning models and professional-grade code implementations.
                 </p>
                 
                 <motion.div
@@ -858,17 +878,17 @@ export default function PortfolioPage() {
             >
               <div>
                 <span className="text-sm font-semibold text-cyan-400 uppercase tracking-wider">
-                  VOICE AI ECOSYSTEM
+                  AI ECOSYSTEM
                 </span>
                 <h2 className="text-4xl lg:text-6xl font-bold mt-4">
                   <span className="bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
-                    What is Voice AI?
+                    What is AI?
                   </span>
                 </h2>
               </div>
               
               <p className="text-xl text-gray-300 leading-relaxed">
-                Professor Bot's voice AI ecosystem is a comprehensive platform that enables natural voice interaction with technology. Our automatic AI systems understand context, learn from interactions, and execute complex tasks through simple voice commands, revolutionizing how humans interact with machines.
+                Our AI ecosystem is a comprehensive platform featuring machine learning models, neural networks, and automatic AI systems. Our intelligent algorithms understand context, learn from data, and execute complex tasks through advanced automation, revolutionizing how businesses operate and make decisions.
               </p>
               
               <motion.button
@@ -878,8 +898,8 @@ export default function PortfolioPage() {
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 <div className="relative flex items-center gap-3">
-                  <Headphones className="w-6 h-6" />
-                  Start Voice AI
+                  <Brain className="w-6 h-6" />
+                  Start AI Journey
                   <ArrowRight className="w-6 h-6 group-hover:translate-x-1 transition-transform duration-300" />
                 </div>
               </motion.button>
@@ -917,7 +937,7 @@ export default function PortfolioPage() {
               </span>
             </h2>
             <p className="text-xl text-gray-300 mt-6 max-w-3xl mx-auto">
-              Ready to transform your business with AI? Let's discuss your project and create something amazing together.
+              Ready to transform your business with AI and automatic AI systems? Let's discuss your project and create intelligent solutions together.
             </p>
           </motion.div>
 
@@ -933,7 +953,7 @@ export default function PortfolioPage() {
               <div>
                 <h3 className="text-2xl font-bold text-white mb-6">Let's Connect</h3>
                 <p className="text-gray-300 text-lg leading-relaxed">
-                  We're here to help you bring your AI vision to life. Reach out to us and let's start building the future together.
+                  We're here to help you bring your AI and automatic AI vision to life. Reach out to us and let's start building intelligent solutions together.
                 </p>
               </div>
 

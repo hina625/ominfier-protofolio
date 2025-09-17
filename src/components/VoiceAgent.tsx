@@ -2,51 +2,22 @@
 
 import React, { useState, useEffect } from "react";
 
-// TypeScript declarations for Speech Recognition API
-declare global {
-  interface Window {
-    SpeechRecognition: any;
-    webkitSpeechRecognition: any;
-  }
-}
 import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
 import { 
   Bot, 
-  Mic, 
-  MicOff, 
-  Volume2, 
-  VolumeX, 
   Brain, 
   Sparkles, 
   Zap, 
-  ArrowRight, 
-  Play, 
-  Pause, 
   Settings, 
-  Headphones, 
-  MessageCircle,
   Globe,
-  Shield,
-  Clock,
-  CheckCircle,
-  Star,
-  Crown,
-  Send,
-  X,
-  User
+  Shield
 } from "lucide-react";
 
 export default function VoiceAgent() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const [isListening, setIsListening] = useState(false);
-  const [isSpeaking, setIsSpeaking] = useState(false);
   const [isActive, setIsActive] = useState(false);
-  const [showChat, setShowChat] = useState(false);
-  const [messages, setMessages] = useState<Array<{id: number, text: string, isBot: boolean, timestamp: Date}>>([]);
-  const [inputMessage, setInputMessage] = useState('');
-  const [isTyping, setIsTyping] = useState(false);
-  const [recognition, setRecognition] = useState<any>(null);
-  const [isVoiceEnabled, setIsVoiceEnabled] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -56,241 +27,34 @@ export default function VoiceAgent() {
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
 
-  // Initialize voice recognition
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
-      if (SpeechRecognition) {
-        const recognitionInstance = new SpeechRecognition();
-        recognitionInstance.continuous = false;
-        recognitionInstance.interimResults = false;
-        recognitionInstance.lang = 'en-US';
-        
-        recognitionInstance.onstart = () => {
-          console.log('Voice recognition started');
-        };
-        
-        recognitionInstance.onresult = (event: any) => {
-          const transcript = event.results[0][0].transcript;
-          console.log('Voice input:', transcript);
-          
-          // Add user voice message
-          const voiceMessage = {
-            id: Date.now(),
-            text: `🎤 ${transcript}`,
-            isBot: false,
-            timestamp: new Date()
-          };
-          setMessages(prev => [...prev, voiceMessage]);
-          
-          // Process voice input and get bot response
-          processVoiceInput(transcript);
-        };
-        
-        recognitionInstance.onerror = (event: any) => {
-          console.error('Voice recognition error:', event.error);
-        };
-        
-        recognitionInstance.onend = () => {
-          setIsListening(false);
-        };
-        
-        setRecognition(recognitionInstance);
-        setIsVoiceEnabled(true);
-      } else {
-        console.log('Speech recognition not supported');
-        setIsVoiceEnabled(false);
-      }
-    }
-  }, []);
 
-  // Text-to-Speech function
-  const speakText = (text: string) => {
-    if ('speechSynthesis' in window) {
-      const utterance = new SpeechSynthesisUtterance(text);
-      utterance.rate = 0.9;
-      utterance.pitch = 1.1;
-      utterance.volume = 0.8;
-      
-      // Try to use a robotic voice if available
-      const voices = speechSynthesis.getVoices();
-      const roboticVoice = voices.find(voice => 
-        voice.name.includes('Google') || 
-        voice.name.includes('Microsoft') ||
-        voice.name.includes('Samantha')
-      );
-      
-      if (roboticVoice) {
-        utterance.voice = roboticVoice;
-      }
-      
-      utterance.onstart = () => setIsSpeaking(true);
-      utterance.onend = () => setIsSpeaking(false);
-      
-      speechSynthesis.speak(utterance);
-    }
-  };
-
-  // Process voice input and generate response
-  const processVoiceInput = (input: string) => {
-    setIsTyping(true);
-    
-    // Simple keyword-based responses for voice
-    let response = '';
-    const lowerInput = input.toLowerCase();
-    
-    if (lowerInput.includes('hello') || lowerInput.includes('hi')) {
-      response = "Hello! I'm Professor Bot. How can I assist you today?";
-    } else if (lowerInput.includes('how are you')) {
-      response = "I'm functioning at optimal capacity. My neural networks are running smoothly!";
-    } else if (lowerInput.includes('what can you do')) {
-      response = "I can help with automation, analysis, voice recognition, and AI-powered tasks. What would you like me to do?";
-    } else if (lowerInput.includes('thank you')) {
-      response = "You're welcome! I'm here to help whenever you need assistance.";
-    } else if (lowerInput.includes('goodbye') || lowerInput.includes('bye')) {
-      response = "Goodbye! It was great talking with you. Feel free to return anytime!";
-    } else if (lowerInput.includes('time')) {
-      response = `The current time is ${new Date().toLocaleTimeString()}.`;
-    } else if (lowerInput.includes('date')) {
-      response = `Today's date is ${new Date().toLocaleDateString()}.`;
-    } else {
-      response = getRandomBotResponse();
-    }
-    
-    setTimeout(() => {
-      const botMessage = {
-        id: Date.now() + 1,
-        text: `🤖 ${response}`,
-        isBot: true,
-        timestamp: new Date()
-      };
-      setMessages(prev => [...prev, botMessage]);
-      setIsTyping(false);
-      
-      // Speak the response
-      speakText(response);
-    }, 1500);
-  };
-
-  // Bot responses
-  const botResponses = [
-    "Hello! I'm Professor Bot, your AI assistant. How can I help you today?",
-    "I'm processing your request with my neural networks. Please wait a moment.",
-    "That's an interesting question! Let me analyze that for you.",
-    "I understand. Let me provide you with the best solution.",
-    "My systems are running optimally. Is there anything specific you'd like to know?",
-    "I'm here to assist you with any task. What would you like me to do?",
-    "My voice recognition systems are active. I can hear you clearly.",
-    "I'm constantly learning and improving. Thank you for interacting with me!",
-    "I can help you with automation, analysis, or any other AI-powered tasks.",
-    "My processors are working at maximum efficiency. Ready for your next command!"
-  ];
-
-  const getRandomBotResponse = () => {
-    return botResponses[Math.floor(Math.random() * botResponses.length)];
-  };
-
-  const handleStartListening = () => {
-    if (isVoiceEnabled && recognition) {
-      setIsListening(true);
-      setShowChat(true);
-      
-      // Add welcome message
-      const welcomeMessage = {
-        id: Date.now(),
-        text: "Hello! I'm Professor Bot. I'm now listening to you. Speak clearly and I'll respond with voice!",
-        isBot: true,
-        timestamp: new Date()
-      };
-      setMessages([welcomeMessage]);
-      
-      // Start voice recognition
-      recognition.start();
-    } else {
-      // Fallback to text chat if voice not available
-      setIsListening(true);
-      setShowChat(true);
-      
-      const welcomeMessage = {
-        id: Date.now(),
-        text: "Hello! I'm Professor Bot. Voice recognition is not available, but you can type messages to chat with me!",
-        isBot: true,
-        timestamp: new Date()
-      };
-      setMessages([welcomeMessage]);
-    }
-  };
-
-  const handleStopListening = () => {
-    if (recognition) {
-      recognition.stop();
-    }
-    setIsListening(false);
-  };
-
-  const sendMessage = () => {
-    if (!inputMessage.trim()) return;
-
-    // Add user message
-    const userMessage = {
-      id: Date.now(),
-      text: inputMessage,
-      isBot: false,
-      timestamp: new Date()
-    };
-    setMessages(prev => [...prev, userMessage]);
-    setInputMessage('');
-
-    // Simulate bot typing
-    setIsTyping(true);
-    setTimeout(() => {
-      const response = getRandomBotResponse();
-      const botMessage = {
-        id: Date.now() + 1,
-        text: `🤖 ${response}`,
-        isBot: true,
-        timestamp: new Date()
-      };
-      setMessages(prev => [...prev, botMessage]);
-      setIsTyping(false);
-      
-      // Speak the response
-      speakText(response);
-    }, 1500);
-  };
-
-  const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') {
-      sendMessage();
-    }
-  };
 
   const voiceFeatures = [
     {
-      icon: <Mic className="w-6 h-6" />,
-      title: "Voice Recognition",
-      description: "Advanced speech recognition with 99.9% accuracy",
+      icon: <Brain className="w-6 h-6" />,
+      title: "Predictive Analytics",
+      description: "Advanced AI models for data-driven insights and forecasting",
       color: "from-blue-400 to-cyan-400",
       delay: 0.1
     },
     {
-      icon: <Brain className="w-6 h-6" />,
-      title: "AI Understanding",
-      description: "Natural language processing and context awareness",
+      icon: <Zap className="w-6 h-6" />,
+      title: "Workflow Automation",
+      description: "Intelligent bots that streamline and optimize daily tasks",
       color: "from-purple-400 to-pink-400",
       delay: 0.2
     },
     {
-      icon: <Globe className="w-6 h-6" />,
-      title: "Multi-Language",
-      description: "Support for 50+ languages and dialects",
+      icon: <Sparkles className="w-6 h-6" />,
+      title: "Smart Decision Making",
+      description: "AI-powered recommendations for better business outcomes",
       color: "from-green-400 to-emerald-400",
       delay: 0.3
     },
     {
       icon: <Shield className="w-6 h-6" />,
-      title: "Privacy First",
-      description: "End-to-end encryption and data protection",
+      title: "Productivity Boost",
+      description: "Reduce manual effort and maximize efficiency",
       color: "from-red-400 to-orange-400",
       delay: 0.4
     }
@@ -388,12 +152,12 @@ export default function VoiceAgent() {
         >
           <h2 className="text-4xl lg:text-6xl font-bold mb-6">
             <span className="bg-gradient-to-r from-purple-400 via-pink-400 to-cyan-400 bg-clip-text text-transparent">
-              Professor Bot
+            Smarter workflows
             </span>
-            <span className="text-white ml-4">AI Assistant</span>
+            <span className="text-white ml-4"> with AI and automation</span>
           </h2>
           <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
-            Meet Professor Bot, your advanced robotic AI assistant with voice recognition, natural language processing, and intelligent automation capabilities
+            Omnifier leverages advanced AI models and intelligent automation to optimize your daily tasks. From predictive analytics to workflow bots, it reduces manual effort, boosts productivity, and ensures smarter decision-making for businesses and individuals alike.
           </p>
         </motion.div>
 
@@ -541,7 +305,7 @@ export default function VoiceAgent() {
                 {/* Floating AI Icons */}
                 {[
                   <Brain className="w-6 h-6" />,
-                  <Mic className="w-6 h-6" />,
+                  <Globe className="w-6 h-6" />,
                   <Sparkles className="w-6 h-6" />,
                   <Zap className="w-6 h-6" />
                 ].map((icon, i) => (
@@ -629,10 +393,10 @@ export default function VoiceAgent() {
                 <span className="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
                   Professor Bot
                 </span>
-                <span className="text-white ml-2">Specifications</span>
+                <span className="text-white ml-2">Capabilities</span>
               </h3>
               <p className="text-lg text-gray-300 leading-relaxed">
-                Advanced robotic AI system with voice processing, neural networks, and autonomous decision-making capabilities
+                Advanced AI platform with predictive analytics, workflow automation, and intelligent decision-making for enhanced productivity
               </p>
             </div>
 
@@ -677,28 +441,12 @@ export default function VoiceAgent() {
               <motion.button
                 whileHover={{ scale: 1.05, y: -2 }}
                 whileTap={{ scale: 0.95 }}
-                onClick={isListening ? handleStopListening : handleStartListening}
-                className={`group relative px-8 py-4 font-semibold rounded-full shadow-2xl overflow-hidden flex items-center gap-3 ${
-                  isListening 
-                    ? 'bg-gradient-to-r from-red-600 to-pink-600 text-white' 
-                    : 'bg-gradient-to-r from-purple-600 to-pink-600 text-white'
-                }`}
-              >
-                <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                <div className="relative flex items-center gap-3">
-                  {isListening ? <MicOff className="w-5 h-5" /> : <Mic className="w-5 h-5" />}
-                  {isListening ? 'Stop Listening' : 'Start Listening'}
-                </div>
-              </motion.button>
-
-              <motion.button
-                whileHover={{ scale: 1.05, y: -2 }}
-                whileTap={{ scale: 0.95 }}
                 className="group px-8 py-4 bg-transparent border-2 border-purple-400 text-purple-400 font-semibold rounded-full hover:bg-purple-400/10 transition-colors duration-300"
+                onClick={() => router.push('/contact')}
               >
                 <div className="flex items-center gap-3">
                   <Settings className="w-5 h-5" />
-                  Configure
+                  Contact Us
                 </div>
               </motion.button>
             </div>
@@ -726,30 +474,30 @@ export default function VoiceAgent() {
             {/* Content */}
             <div className="relative z-10">
               <h3 className="text-3xl font-bold mb-4 text-white flex items-center justify-center gap-4">
-                Bot Voice Commands
+                AI Optimization Features
                 <motion.div
                   animate={{ rotate: [0, 15, -15, 0] }}
                   transition={{ duration: 2, repeat: Infinity }}
                 >
-                  <Bot className="w-8 h-8 text-purple-400" />
+                  <Brain className="w-8 h-8 text-purple-400" />
                 </motion.div>
               </h3>
               <p className="text-gray-300 mb-8 text-lg">
-                Professor Bot processes voice commands with advanced neural networks and responds with robotic precision
+                Leverage advanced AI models and intelligent automation to optimize workflows and enhance productivity
               </p>
               
-              {/* Voice Commands Grid */}
+              {/* AI Features Grid */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
                 {[
-                  "Professor Bot, analyze system status",
-                  "Execute task automation protocol",
-                  "Initiate neural network scan",
-                  "Process data and generate report",
-                  "Activate security protocols",
-                  "Perform system diagnostics"
-                ].map((command, index) => (
+                  "Predictive Analytics & Forecasting",
+                  "Intelligent Workflow Automation",
+                  "Smart Data Processing & Insights",
+                  "AI-Powered Decision Support",
+                  "Productivity Optimization Tools",
+                  "Advanced Business Intelligence"
+                ].map((feature, index) => (
                   <motion.div
-                    key={command}
+                    key={feature}
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6, delay: index * 0.1 }}
@@ -757,24 +505,11 @@ export default function VoiceAgent() {
                     whileHover={{ scale: 1.02, y: -2 }}
                     className="p-4 bg-gradient-to-r from-gray-800/50 to-gray-700/30 rounded-xl border border-purple-400/20 hover:border-purple-400/40 transition-all duration-300"
                   >
-                    <p className="text-gray-300 text-sm">{command}</p>
+                    <p className="text-gray-300 text-sm">{feature}</p>
                   </motion.div>
                 ))}
               </div>
 
-              {/* Action Button */}
-              <motion.button
-                whileHover={{ scale: 1.05, y: -2 }}
-                whileTap={{ scale: 0.95 }}
-                className="group relative px-8 py-4 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-semibold rounded-full shadow-2xl overflow-hidden"
-              >
-                <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                <div className="relative flex items-center gap-3">
-                  <Play className="w-5 h-5" />
-                  Activate Professor Bot
-                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
-                </div>
-              </motion.button>
             </div>
             
             {/* Floating Sparkles */}
@@ -802,162 +537,6 @@ export default function VoiceAgent() {
         </motion.div>
       </div>
 
-      {/* Chat Modal */}
-      {showChat && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
-          onClick={() => setShowChat(false)}
-        >
-          <motion.div
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0.8, opacity: 0 }}
-            transition={{ type: "spring", duration: 0.5 }}
-            className="relative w-full max-w-2xl h-[70vh] bg-gradient-to-br from-gray-900 to-gray-800 rounded-3xl shadow-2xl border border-purple-400/30 overflow-hidden"
-            onClick={(e: React.MouseEvent) => e.stopPropagation()}
-          >
-            {/* Header */}
-            <div className="flex items-center justify-between p-4 border-b border-gray-700/50 bg-gradient-to-r from-purple-900/50 to-pink-900/50">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center">
-                  <Bot className="w-6 h-6 text-white" />
-                </div>
-                <div>
-                  <h3 className="text-white font-semibold">Professor Bot</h3>
-                  <p className="text-gray-300 text-sm">
-                    {isListening ? '🎤 Listening...' : isSpeaking ? '🔊 Speaking...' : isVoiceEnabled ? '🎙️ Voice Ready' : '💬 Text Only'}
-                  </p>
-                </div>
-              </div>
-              <button
-                onClick={() => setShowChat(false)}
-                className="p-2 hover:bg-gray-700/50 rounded-full transition-colors"
-              >
-                <X className="w-5 h-5 text-gray-400" />
-              </button>
-            </div>
-
-            {/* Messages Area */}
-            <div className="flex-1 p-4 overflow-y-auto space-y-4">
-              {messages.map((message) => (
-                <motion.div
-                  key={message.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className={`flex ${message.isBot ? 'justify-start' : 'justify-end'}`}
-                >
-                  <div className={`flex items-start gap-3 max-w-[80%] ${message.isBot ? 'flex-row' : 'flex-row-reverse'}`}>
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                      message.isBot 
-                        ? 'bg-gradient-to-br from-purple-500 to-pink-500' 
-                        : 'bg-gradient-to-br from-blue-500 to-cyan-500'
-                    }`}>
-                      {message.isBot ? (
-                        <Bot className="w-4 h-4 text-white" />
-                      ) : (
-                        <User className="w-4 h-4 text-white" />
-                      )}
-                    </div>
-                    <div className={`p-3 rounded-2xl ${
-                      message.isBot 
-                        ? 'bg-gray-700/50 text-white' 
-                        : 'bg-gradient-to-r from-purple-600 to-pink-600 text-white'
-                    }`}>
-                      <p className="text-sm">{message.text}</p>
-                      <p className="text-xs opacity-60 mt-1">
-                        {message.timestamp.toLocaleTimeString()}
-                      </p>
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
-
-              {/* Typing Indicator */}
-              {isTyping && (
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="flex justify-start"
-                >
-                  <div className="flex items-start gap-3">
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
-                      <Bot className="w-4 h-4 text-white" />
-                    </div>
-                    <div className="p-3 rounded-2xl bg-gray-700/50">
-                      <div className="flex space-x-1">
-                        <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
-                        <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
-                        <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
-                      </div>
-                    </div>
-                  </div>
-                </motion.div>
-              )}
-            </div>
-
-            {/* Input Area */}
-            <div className="p-4 border-t border-gray-700/50">
-              {/* Voice Controls */}
-              {isVoiceEnabled && (
-                <div className="flex gap-2 mb-3">
-                  <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={isListening ? handleStopListening : handleStartListening}
-                    className={`px-4 py-2 rounded-lg flex items-center gap-2 text-sm font-medium transition-all duration-300 ${
-                      isListening 
-                        ? 'bg-red-600 hover:bg-red-700 text-white' 
-                        : 'bg-green-600 hover:bg-green-700 text-white'
-                    }`}
-                  >
-                    {isListening ? <MicOff className="w-4 h-4" /> : <Mic className="w-4 h-4" />}
-                    {isListening ? 'Stop Voice' : 'Start Voice'}
-                  </motion.button>
-                  
-                  <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={() => {
-                      if (isSpeaking) {
-                        speechSynthesis.cancel();
-                        setIsSpeaking(false);
-                      }
-                    }}
-                    disabled={!isSpeaking}
-                    className="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 flex items-center gap-2"
-                  >
-                    <VolumeX className="w-4 h-4" />
-                    Stop Speaking
-                  </motion.button>
-                </div>
-              )}
-              
-              <div className="flex gap-3">
-                <input
-                  type="text"
-                  value={inputMessage}
-                  onChange={(e) => setInputMessage(e.target.value)}
-                  onKeyPress={handleKeyPress}
-                  placeholder={isVoiceEnabled ? "Type a message or use voice..." : "Type your message to Professor Bot..."}
-                  className="flex-1 px-4 py-3 bg-gray-800/50 border border-purple-400/30 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300"
-                />
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={sendMessage}
-                  disabled={!inputMessage.trim()}
-                  className="px-4 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-xl disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300"
-                >
-                  <Send className="w-5 h-5" />
-                </motion.button>
-              </div>
-            </div>
-          </motion.div>
-        </motion.div>
-      )}
     </section>
   );
 }

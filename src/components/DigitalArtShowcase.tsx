@@ -360,7 +360,9 @@ export default function DigitalArtShowcase() {
                     whileTap={{ scale: 0.95 }}
                     className="w-full py-4 px-6 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-bold rounded-xl shadow-xl flex items-center justify-between group"
                   >
-                    <span>Start Journey</span>
+                     <span className="bg-gradient-to-r from-purple-400 via-pink-400 to-cyan-400 bg-clip-text text-transparent">
+                         Start Journey With us 
+                     </span>
                     <motion.div
                       animate={{ x: [0, 5, 0] }}
                       transition={{ duration: 1.5, repeat: Infinity }}

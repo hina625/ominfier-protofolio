@@ -47,6 +47,10 @@ export default function WebRTCFeatures() {
   const openModal = () => {
     setIsModalOpen(true);
     setIsCallActive(true);
+    // Reset all states when opening
+    setIsVideoOn(true);
+    setIsMicOn(true);
+    setIsVolumeOn(true);
   };
 
   const closeModal = () => {
@@ -359,7 +363,7 @@ export default function WebRTCFeatures() {
                   whileHover={{ scale: 1.05, y: -2 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={openModal}
-                  className="group relative px-8 py-4 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-semibold rounded-full shadow-2xl overflow-hidden"
+                  className="group relative px-8 py-4 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-semibold rounded-full shadow-2xl overflow-hidden cursor-pointer"
                 >
                   <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                   <div className="relative flex items-center gap-3">
@@ -424,18 +428,18 @@ export default function WebRTCFeatures() {
             onClick={(e: React.MouseEvent) => e.stopPropagation()}
           >
             {/* Header */}
-            <div className="flex items-center justify-between p-6 border-b border-gray-700/50">
+            <div className="flex items-center justify-between p-6 border-b border-gray-700/50 bg-gradient-to-r from-purple-900/50 to-pink-900/50">
               <div className="flex items-center gap-3">
-                <div className="w-3 h-3 bg-red-500 rounded-full"></div>
-                <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
-                <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                <span className="ml-4 text-white font-semibold">WebRTC Demo Call</span>
+                <div className="w-3 h-3 bg-red-500 rounded-full animate-pulse"></div>
+                <div className="w-3 h-3 bg-yellow-500 rounded-full animate-pulse" style={{ animationDelay: '0.2s' }}></div>
+                <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse" style={{ animationDelay: '0.4s' }}></div>
+                <span className="ml-4 text-white font-semibold text-lg">WebRTC Demo Call</span>
               </div>
               <button
                 onClick={closeModal}
-                className="p-2 hover:bg-gray-700/50 rounded-full transition-colors"
+                className="p-2 hover:bg-gray-700/50 rounded-full transition-colors group"
               >
-                <X className="w-6 h-6 text-gray-400" />
+                <X className="w-6 h-6 text-gray-400 group-hover:text-white transition-colors" />
               </button>
             </div>
 
@@ -444,13 +448,33 @@ export default function WebRTCFeatures() {
               <div className="relative w-full h-full bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl overflow-hidden">
                 {/* Demo Video Background */}
                 <div className="absolute inset-0 bg-gradient-to-br from-purple-900/40 to-pink-900/40 flex items-center justify-center">
-                  <div className="text-center">
-                    <div className="w-32 h-32 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center mb-4 mx-auto border-4 border-white/20">
+                  <motion.div 
+                    className="text-center"
+                    initial={{ scale: 0.8, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{ duration: 0.5 }}
+                  >
+                    <motion.div 
+                      className="w-32 h-32 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center mb-4 mx-auto border-4 border-white/20"
+                      animate={{ 
+                        scale: [1, 1.1, 1],
+                        rotate: [0, 5, -5, 0]
+                      }}
+                      transition={{ 
+                        duration: 3, 
+                        repeat: Infinity,
+                        ease: "easeInOut"
+                      }}
+                    >
                       <Video className="w-16 h-16 text-white" />
+                    </motion.div>
+                    <p className="text-white text-lg font-semibold mb-2">Demo Video Call</p>
+                    <p className="text-gray-300 text-sm mb-4">WebRTC Technology in Action</p>
+                    <div className="flex items-center justify-center gap-2">
+                      <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                      <span className="text-green-400 text-sm">Connected</span>
                     </div>
-                    <p className="text-white text-lg font-semibold">Demo Video Call</p>
-                    <p className="text-gray-300 text-sm">WebRTC Technology in Action</p>
-                  </div>
+                  </motion.div>
                 </div>
 
                 {/* Video Controls Overlay */}

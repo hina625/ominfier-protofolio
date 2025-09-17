@@ -262,7 +262,7 @@ export default function AppDevelopment() {
                       <Smartphone className="w-8 h-8 text-white" />
                     </div>
                     <h3 className="text-white font-bold text-lg">Omnifier App</h3>
-                    <p className="text-gray-400 text-sm">AI Voice Assistant</p>
+                    <p className="text-gray-400 text-sm">AI  Assistant</p>
                   </motion.div>
                   
                   {/* App Features */}
@@ -471,7 +471,7 @@ export default function AppDevelopment() {
               
               {/* Action Buttons */}
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Link href="/portfolio#contact" passHref legacyBehavior>
+                <Link href="/contact" passHref legacyBehavior>
                   <motion.a
                     whileHover={{ scale: 1.05, y: -2 }}
                     whileTap={{ scale: 0.95 }}

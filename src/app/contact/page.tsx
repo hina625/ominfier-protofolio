@@ -58,16 +58,19 @@ export default function ContactPage() {
     setIsSubmitting(true);
     
     try {
+      // Get API URL from environment variable
+      const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:5000/api';
+      
       // Send data to API
-      const response = await fetch('http://localhost:5000/api/contacts', {
+      const response = await fetch(`${API_BASE_URL}/contacts`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          name: formData.name,
-          email: formData.email,
-          subject: formData.subject,
+      name: formData.name,
+      email: formData.email,
+      subject: formData.subject,
           message: formData.message
         })
       });
@@ -75,14 +78,14 @@ export default function ContactPage() {
       const result = await response.json();
 
       if (response.ok && result.success) {
-        setIsSubmitting(false);
-        setIsSubmitted(true);
-        
-        // Reset form after 3 seconds
-        setTimeout(() => {
-          setIsSubmitted(false);
-          setFormData({ name: '', email: '', subject: '', message: '' });
-        }, 3000);
+    setIsSubmitting(false);
+    setIsSubmitted(true);
+    
+    // Reset form after 3 seconds
+    setTimeout(() => {
+      setIsSubmitted(false);
+      setFormData({ name: '', email: '', subject: '', message: '' });
+    }, 3000);
       } else {
         throw new Error(result.error || 'Failed to submit contact form');
       }

@@ -116,7 +116,6 @@ interface DashboardStats {
 
 export default function OmnifierAdminDashboard() {
   const [contacts, setContacts] = useState<ContactData[]>([]);
-  
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState<'all' | 'read' | 'unread'>('all');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -128,10 +127,10 @@ export default function OmnifierAdminDashboard() {
   const [error, setError] = useState<string | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  const ADMIN_PASSWORD = 'admin123';
+  const ADMIN_PASSWORD = 'mananrajpout@123';
 
   // API Base URL
-  const API_BASE_URL = 'http://localhost:5000/api';
+  const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:5000/api';
 
   useEffect(() => {
     const authStatus = sessionStorage.getItem('adminAuthenticated');
@@ -149,12 +148,22 @@ export default function OmnifierAdminDashboard() {
       setLoading(true);
       setError(null);
       
+      const token = sessionStorage.getItem('adminToken');
+      if (!token) {
+        throw new Error('No authentication token found');
+      }
+      
       const params = new URLSearchParams();
       if (searchTerm) params.append('search', searchTerm);
       if (filterStatus !== 'all') params.append('status', filterStatus);
       params.append('limit', '50'); // Get more contacts for admin panel
       
-      const response = await fetch(`${API_BASE_URL}/contacts?${params}`);
+      const response = await fetch(`${API_BASE_URL}/contacts?${params}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
       const result = await response.json();
       
       if (response.ok && result.success) {
@@ -183,15 +192,28 @@ export default function OmnifierAdminDashboard() {
   // Fetch dashboard stats from API
   const fetchDashboardStats = async () => {
     try {
-      const response = await fetch(`${API_BASE_URL}/dashboard/stats`);
+      const token = sessionStorage.getItem('adminToken');
+      if (!token) {
+        throw new Error('No authentication token found');
+      }
+      
+      const response = await fetch(`${API_BASE_URL}/dashboard/stats`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
       const result = await response.json();
       
       if (response.ok && result.success) {
-        // Update dashboard stats if needed
-        console.log('Dashboard stats loaded:', result.data);
+        // Stats are calculated locally, no need to set state
+        console.log('Dashboard stats fetched successfully:', result.data);
+      } else {
+        throw new Error(result.error || 'Failed to fetch stats');
       }
     } catch (error) {
       console.error('Error fetching dashboard stats:', error);
+      // Don't throw error for stats as they're calculated locally
     }
   };
 
@@ -202,16 +224,37 @@ export default function OmnifierAdminDashboard() {
     }
   }, [searchTerm, filterStatus, isAuthenticated]);
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (password === ADMIN_PASSWORD) {
+    
+    try {
+      // Send login request to backend
+      const response = await fetch(`${API_BASE_URL}/admin/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username: 'admin',
+          password: password
+        })
+      });
+
+      const result = await response.json();
+
+      if (response.ok && result.success) {
       setIsAuthenticated(true);
       setShowPasswordForm(false);
       sessionStorage.setItem('adminAuthenticated', 'true');
-      fetchContacts();
-      fetchDashboardStats();
+        sessionStorage.setItem('adminToken', result.data.token);
+        fetchContacts();
+        fetchDashboardStats();
     } else {
-      alert('Invalid password!');
+        alert(result.error || 'Invalid credentials!');
+      }
+    } catch (error) {
+      console.error('Login error:', error);
+      alert('Login failed. Please try again.');
     }
   };
 
@@ -221,13 +264,20 @@ export default function OmnifierAdminDashboard() {
     setPassword('');
     setMobileMenuOpen(false);
     sessionStorage.removeItem('adminAuthenticated');
+    sessionStorage.removeItem('adminToken');
   };
 
   const markAsRead = async (id: string) => {
     try {
+      const token = sessionStorage.getItem('adminToken');
+      if (!token) {
+        throw new Error('No authentication token found');
+      }
+      
       const response = await fetch(`${API_BASE_URL}/contacts/${id}/read`, {
         method: 'PATCH',
         headers: {
+          'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json',
         }
       });
@@ -236,10 +286,10 @@ export default function OmnifierAdminDashboard() {
 
       if (response.ok && result.success) {
         // Update local state
-        const updatedContacts = contacts.map(contact => 
-          contact.id === id ? { ...contact, isRead: true } : contact
-        );
-        setContacts(updatedContacts);
+    const updatedContacts = contacts.map(contact => 
+      contact.id === id ? { ...contact, isRead: true } : contact
+    );
+    setContacts(updatedContacts);
       } else {
         throw new Error(result.error || 'Failed to mark contact as read');
       }
@@ -252,9 +302,15 @@ export default function OmnifierAdminDashboard() {
   const deleteContact = async (id: string) => {
     if (confirm('Are you sure you want to delete this contact?')) {
       try {
+        const token = sessionStorage.getItem('adminToken');
+        if (!token) {
+          throw new Error('No authentication token found');
+        }
+        
         const response = await fetch(`${API_BASE_URL}/contacts/${id}`, {
           method: 'DELETE',
           headers: {
+            'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json',
           }
         });
@@ -263,8 +319,8 @@ export default function OmnifierAdminDashboard() {
 
         if (response.ok && result.success) {
           // Update local state
-          const updatedContacts = contacts.filter(contact => contact.id !== id);
-          setContacts(updatedContacts);
+      const updatedContacts = contacts.filter(contact => contact.id !== id);
+      setContacts(updatedContacts);
         } else {
           throw new Error(result.error || 'Failed to delete contact');
         }
@@ -384,11 +440,6 @@ export default function OmnifierAdminDashboard() {
               </motion.button>
             </form>
 
-            <div className="mt-6 text-center">
-              <p className="text-sm text-purple-300/70">
-                Demo access: <span className="text-purple-200 font-mono bg-white/5 px-2 py-1 rounded-lg">admin123</span>
-              </p>
-            </div>
           </div>
         </motion.div>
       </div>
@@ -445,12 +496,12 @@ export default function OmnifierAdminDashboard() {
               </div>
               {!sidebarCollapsed && (
                 <div className="flex gap-2">
-                  <button
-                    onClick={() => setSidebarCollapsed(true)}
+                <button
+                  onClick={() => setSidebarCollapsed(true)}
                     className="p-2 hover:bg-white/10 rounded-lg transition-colors hidden lg:block"
-                  >
-                    <ArrowUp className="w-5 h-5 text-purple-300 rotate-[-90deg]" />
-                  </button>
+                >
+                  <ArrowUp className="w-5 h-5 text-purple-300 rotate-[-90deg]" />
+                </button>
                   <button
                     onClick={() => setMobileMenuOpen(false)}
                     className="p-2 hover:bg-white/10 rounded-lg transition-colors lg:hidden"
@@ -544,10 +595,10 @@ export default function OmnifierAdminDashboard() {
           >
             <div className="flex flex-col lg:flex-row gap-4 items-center justify-between">
               <div className="flex items-center justify-between w-full lg:w-auto">
-                <div>
+              <div>
                   <h1 className="text-2xl lg:text-3xl font-bold text-white mb-2 bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
-                    Omnifier Dashboard
-                  </h1>
+                  Omnifier Dashboard
+                </h1>
                   <p className="text-purple-200/80 text-sm lg:text-base">Mission Control Center</p>
                 </div>
                 

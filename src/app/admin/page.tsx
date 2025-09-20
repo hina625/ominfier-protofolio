@@ -178,8 +178,8 @@ export default function OmnifierAdminDashboard() {
   // API Base URL - Auto-detect environment
   const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 
     (typeof window !== 'undefined' && window.location.hostname === 'ominfier-protofolio.vercel.app' 
-      ? 'https://your-backend-url.herokuapp.com/api'  // Replace with your actual backend URL
-      : 'http://localhost:5000/api');
+      ? 'https://backend-protofolio.vercel.app/api'  // Vercel backend URL
+      : 'http://localhost:5000/api');  // Local development URL
   
   // Debug environment variables
   console.log('Environment check:', {

@@ -5,6 +5,7 @@ import BackgroundParticles from '../../components/BackgroundParticles';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
 import { motion } from 'framer-motion';
+import { API_ENDPOINTS, apiRequest, handleApiError } from '../../config/api';
 import { 
   Mail, 
   Phone, 
@@ -58,23 +59,13 @@ export default function ContactPage() {
     setIsSubmitting(true);
     
     try {
-      // Get API URL from environment variable
-      // API Base URL - Auto-detect environment
-      const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 
-        (typeof window !== 'undefined' && window.location.hostname === 'ominfier-protofolio.vercel.app' 
-          ? 'https://backend-protofolio.vercel.app/api'  // Vercel backend URL
-          : 'http://localhost:5000/api');  // Local development URL
-      
-      // Send data to API
-      const response = await fetch(`${API_BASE_URL}/contacts`, {
+      // Send data to API using centralized configuration
+      const response = await apiRequest(API_ENDPOINTS.CONTACTS.BASE, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
         body: JSON.stringify({
-      name: formData.name,
-      email: formData.email,
-      subject: formData.subject,
+          name: formData.name,
+          email: formData.email,
+          subject: formData.subject,
           message: formData.message
         })
       });
@@ -82,14 +73,14 @@ export default function ContactPage() {
       const result = await response.json();
 
       if (response.ok && result.success) {
-    setIsSubmitting(false);
-    setIsSubmitted(true);
-    
-    // Reset form after 3 seconds
-    setTimeout(() => {
-      setIsSubmitted(false);
-      setFormData({ name: '', email: '', subject: '', message: '' });
-    }, 3000);
+        setIsSubmitting(false);
+        setIsSubmitted(true);
+        
+        // Reset form after 3 seconds
+        setTimeout(() => {
+          setIsSubmitted(false);
+          setFormData({ name: '', email: '', subject: '', message: '' });
+        }, 3000);
       } else {
         throw new Error(result.error || 'Failed to submit contact form');
       }

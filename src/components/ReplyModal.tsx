@@ -44,10 +44,7 @@ export default function ReplyModal({ isOpen, onClose, contact, onReplySent }: Re
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
 
-  const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 
-    (typeof window !== 'undefined' && window.location.hostname === 'ominfier-protofolio.vercel.app' 
-      ? 'https://backend-protofolio.vercel.app/api'  // Vercel backend URL
-      : 'http://localhost:5000/api');  // Local development URL
+  const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:5000/api';
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -61,9 +58,6 @@ export default function ReplyModal({ isOpen, onClose, contact, onReplySent }: Re
       setError('Please fill in all fields');
       return;
     }
-
-    console.log('Sending reply for contact:', contact.id);
-    console.log('Reply data:', replyData);
 
     setIsLoading(true);
     setError(null);

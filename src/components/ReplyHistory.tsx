@@ -39,10 +39,7 @@ export default function ReplyHistory({ contactId, onReplyUpdate }: ReplyHistoryP
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 
-    (typeof window !== 'undefined' && window.location.hostname === 'ominfier-protofolio.vercel.app' 
-      ? 'https://backend-protofolio.vercel.app/api'  // Vercel backend URL
-      : 'http://localhost:5000/api');  // Local development URL
+  const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:5000/api';
 
   const fetchReplies = async () => {
     try {

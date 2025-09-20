@@ -40,6 +40,7 @@ import {
 } from 'lucide-react';
 import ContactDetails from '../../components/ContactDetails';
 import ReplyModal from '../../components/ReplyModal';
+import { API_ENDPOINTS, apiRequest, handleApiError } from '../../config/api';
 
 // Omnifier Background Component
 const OmnifierBackground = () => {
@@ -175,33 +176,9 @@ export default function OmnifierAdminDashboard() {
 
   const ADMIN_PASSWORD = 'mananrajpout@123';
 
-  // API Base URL - Auto-detect environment
-  const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 
-    (typeof window !== 'undefined' && window.location.hostname === 'ominfier-protofolio.vercel.app' 
-      ? 'https://backend-protofolio.vercel.app/api'  // Vercel backend URL
-      : 'http://localhost:5000/api');  // Local development URL
+  // API Base URL Configuration
+  const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:5000/api';
   
-  // Debug environment variables
-  console.log('Environment check:', {
-    NODE_ENV: process.env.NODE_ENV,
-    NEXT_PUBLIC_API_BASE_URL: process.env.NEXT_PUBLIC_API_BASE_URL,
-    API_BASE_URL: API_BASE_URL
-  });
-  
-  // Test API connectivity
-  const testAPI = async () => {
-    try {
-      const response = await fetch(`${API_BASE_URL.replace('/api', '')}/api/health`);
-      const data = await response.json();
-      console.log('API Health Check:', data);
-    } catch (error) {
-      console.error('API Health Check Failed:', error);
-    }
-  };
-  
-  useEffect(() => {
-    testAPI();
-  }, []);
 
   useEffect(() => {
     const authStatus = sessionStorage.getItem('adminAuthenticated');
@@ -229,10 +206,9 @@ export default function OmnifierAdminDashboard() {
       if (filterStatus !== 'all') params.append('status', filterStatus);
       params.append('limit', '50'); // Get more contacts for admin panel
       
-      const response = await fetch(`${API_BASE_URL}/contacts?${params}`, {
+      const response = await apiRequest(`${API_ENDPOINTS.CONTACTS.BASE}?${params}`, {
         headers: {
           'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json',
         },
       });
       const result = await response.json();
@@ -269,10 +245,9 @@ export default function OmnifierAdminDashboard() {
         throw new Error('No authentication token found');
       }
       
-      const response = await fetch(`${API_BASE_URL}/dashboard/stats`, {
+      const response = await apiRequest(API_ENDPOINTS.DASHBOARD.STATS, {
         headers: {
           'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json',
         },
       });
       const result = await response.json();
@@ -289,7 +264,6 @@ export default function OmnifierAdminDashboard() {
             replySuccessRate: result.data.replySuccessRate || 0
           });
         }
-        console.log('Dashboard stats fetched successfully:', result.data);
       } else {
         throw new Error(result.error || 'Failed to fetch stats');
       }
@@ -328,29 +302,14 @@ export default function OmnifierAdminDashboard() {
     e.preventDefault();
     
     try {
-      // Debug logging
-      console.log('API_BASE_URL:', API_BASE_URL);
-      console.log('Full URL:', `${API_BASE_URL}/admin/login`);
-      console.log('Password:', password);
-      console.log('Request payload:', {
-        username: 'admin',
-        password: password
-      });
-      
       // Send login request to backend
-      const response = await fetch(`${API_BASE_URL}/admin/login`, {
+      const response = await apiRequest(API_ENDPOINTS.ADMIN.LOGIN, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
         body: JSON.stringify({
           username: 'admin',
           password: password
         })
       });
-
-      console.log('Response status:', response.status);
-      console.log('Response headers:', Object.fromEntries(response.headers.entries()));
 
       const result = await response.json();
       console.log('Response data:', result);

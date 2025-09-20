@@ -34,65 +34,94 @@ import {
   Plus,
   ArrowUp,
   ArrowDown,
-  Sparkles
+  Sparkles,
+  Send,
+  Reply
 } from 'lucide-react';
+import ContactDetails from '../../components/ContactDetails';
+import ReplyModal from '../../components/ReplyModal';
 
 // Omnifier Background Component
-const OmnifierBackground = () => (
-  <div className="fixed inset-0 overflow-hidden">
-    {/* Main omnifier gradient */}
-    <div className="absolute inset-0 bg-gradient-to-br from-slate-950 via-purple-950 to-indigo-950" />
-    
-    {/* Omnifier energy fields */}
-    <div className="absolute inset-0 bg-gradient-radial from-purple-900/30 via-transparent to-transparent" />
-    <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-radial from-violet-600/20 via-purple-800/10 to-transparent rounded-full blur-3xl animate-pulse" />
-    <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-gradient-radial from-indigo-600/20 via-blue-800/10 to-transparent rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }} />
-    <div className="absolute top-3/4 left-3/4 w-72 h-72 bg-gradient-radial from-pink-600/15 via-purple-700/8 to-transparent rounded-full blur-3xl animate-pulse" style={{ animationDelay: '4s' }} />
-    
-    {/* Omnifier particles */}
-    {[...Array(50)].map((_, i) => (
-      <motion.div
-        key={i}
-        className="absolute w-1 h-1 bg-white rounded-full opacity-60"
-        style={{
-          left: `${Math.random() * 100}%`,
-          top: `${Math.random() * 100}%`,
-        }}
-        animate={{
-          opacity: [0.3, 1, 0.3],
-          scale: [1, 1.2, 1],
-        }}
-        transition={{
-          duration: Math.random() * 3 + 2,
-          repeat: Infinity,
-          delay: Math.random() * 2,
-        }}
-      />
-    ))}
-    
-    {/* Omnifier energy streams */}
-    {[...Array(3)].map((_, i) => (
-      <motion.div
-        key={`stream-${i}`}
-        className="absolute w-1 h-1 bg-gradient-to-r from-white via-purple-300 to-transparent rounded-full"
-        style={{
-          left: `-10px`,
-          top: `${Math.random() * 100}%`,
-        }}
-        animate={{
-          x: [0, (typeof window !== 'undefined' ? window.innerWidth : 1920) + 100],
-          opacity: [0, 1, 0],
-        }}
-        transition={{
-          duration: 2,
-          repeat: Infinity,
-          delay: i * 3,
-          ease: "easeOut"
-        }}
-      />
-    ))}
-  </div>
-);
+const OmnifierBackground = () => {
+  // Use fixed positions to avoid hydration mismatch
+  const particlePositions = [
+    { left: 45.2, top: 10.3 }, { left: 81.7, top: 86.2 }, { left: 35.4, top: 15.9 },
+    { left: 49.3, top: 73.5 }, { left: 50.4, top: 12.5 }, { left: 37.6, top: 2.9 },
+    { left: 41.3, top: 82.6 }, { left: 91.7, top: 3.2 }, { left: 48.6, top: 86.9 },
+    { left: 23.9, top: 89.8 }, { left: 46.7, top: 43.7 }, { left: 97.5, top: 7.6 },
+    { left: 57.4, top: 92.7 }, { left: 90.9, top: 43.5 }, { left: 35.4, top: 90.3 },
+    { left: 25.7, top: 59.5 }, { left: 91.3, top: 12.1 }, { left: 88.5, top: 18.1 },
+    { left: 0.9, top: 41.6 }, { left: 49.1, top: 78.0 }, { left: 71.1, top: 20.2 },
+    { left: 56.8, top: 73.3 }, { left: 0.6, top: 47.5 }, { left: 1.3, top: 42.2 },
+    { left: 79.3, top: 0.5 }, { left: 54.2, top: 98.7 }, { left: 77.7, top: 16.2 },
+    { left: 1.3, top: 31.6 }, { left: 41.2, top: 83.3 }, { left: 48.9, top: 93.8 },
+    { left: 8.9, top: 85.5 }, { left: 15.5, top: 32.9 }, { left: 68.9, top: 55.4 },
+    { left: 76.6, top: 62.6 }, { left: 30.3, top: 63.9 }, { left: 14.9, top: 73.7 },
+    { left: 39.9, top: 13.5 }, { left: 91.8, top: 60.9 }, { left: 31.9, top: 44.9 },
+    { left: 41.2, top: 50.9 }, { left: 53.5, top: 99.2 }, { left: 59.7, top: 62.2 },
+    { left: 66.2, top: 7.1 }, { left: 14.9, top: 85.6 }, { left: 3.7, top: 96.7 },
+    { left: 25.4, top: 27.0 }, { left: 66.7, top: 39.8 }, { left: 76.9, top: 57.4 },
+    { left: 22.0, top: 97.1 }, { left: 58.2, top: 5.0 }
+  ];
+
+  const streamPositions = [32.4, 40.7, 32.1];
+
+  return (
+    <div className="fixed inset-0 overflow-hidden">
+      {/* Main omnifier gradient */}
+      <div className="absolute inset-0 bg-gradient-to-br from-slate-950 via-purple-950 to-indigo-950" />
+      
+      {/* Omnifier energy fields */}
+      <div className="absolute inset-0 bg-gradient-radial from-purple-900/30 via-transparent to-transparent" />
+      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-radial from-violet-600/20 via-purple-800/10 to-transparent rounded-full blur-3xl animate-pulse" />
+      <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-gradient-radial from-indigo-600/20 via-blue-800/10 to-transparent rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }} />
+      <div className="absolute top-3/4 left-3/4 w-72 h-72 bg-gradient-radial from-pink-600/15 via-purple-700/8 to-transparent rounded-full blur-3xl animate-pulse" style={{ animationDelay: '4s' }} />
+      
+      {/* Omnifier particles */}
+      {particlePositions.map((pos, i) => (
+        <motion.div
+          key={i}
+          className="absolute w-1 h-1 bg-white rounded-full opacity-60"
+          style={{
+            left: `${pos.left}%`,
+            top: `${pos.top}%`,
+          }}
+          animate={{
+            opacity: [0.3, 1, 0.3],
+            scale: [1, 1.2, 1],
+          }}
+          transition={{
+            duration: 2 + (i % 3),
+            repeat: Infinity,
+            delay: (i % 2) * 0.5,
+          }}
+        />
+      ))}
+      
+      {/* Omnifier energy streams */}
+      {streamPositions.map((top, i) => (
+        <motion.div
+          key={`stream-${i}`}
+          className="absolute w-1 h-1 bg-gradient-to-r from-white via-purple-300 to-transparent rounded-full"
+          style={{
+            left: `-10px`,
+            top: `${top}%`,
+          }}
+          animate={{
+            x: [0, (typeof window !== 'undefined' ? window.innerWidth : 1920) + 100],
+            opacity: [0, 1, 0],
+          }}
+          transition={{
+            duration: 2,
+            repeat: Infinity,
+            delay: i * 3,
+            ease: "easeOut"
+          }}
+        />
+      ))}
+    </div>
+  );
+};
 
 interface ContactData {
   id: string;
@@ -112,6 +141,12 @@ interface DashboardStats {
   weeklyGrowth: number;
   responseTime: string;
   satisfactionRate: number;
+  totalReplies?: number;
+  sentReplies?: number;
+  failedReplies?: number;
+  pendingReplies?: number;
+  contactsWithReplies?: number;
+  replySuccessRate?: number;
 }
 
 export default function OmnifierAdminDashboard() {
@@ -126,11 +161,47 @@ export default function OmnifierAdminDashboard() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [selectedContact, setSelectedContact] = useState<ContactData | null>(null);
+  const [showContactDetails, setShowContactDetails] = useState(false);
+  const [showReplyModal, setShowReplyModal] = useState(false);
+  const [replyStats, setReplyStats] = useState({
+    totalReplies: 0,
+    sentReplies: 0,
+    failedReplies: 0,
+    pendingReplies: 0,
+    contactsWithReplies: 0,
+    replySuccessRate: 0
+  });
 
   const ADMIN_PASSWORD = 'mananrajpout@123';
 
-  // API Base URL
-  const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:5000/api';
+  // API Base URL - Auto-detect environment
+  const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 
+    (typeof window !== 'undefined' && window.location.hostname === 'ominfier-protofolio.vercel.app' 
+      ? 'https://your-backend-url.herokuapp.com/api'  // Replace with your actual backend URL
+      : 'http://localhost:5000/api');
+  
+  // Debug environment variables
+  console.log('Environment check:', {
+    NODE_ENV: process.env.NODE_ENV,
+    NEXT_PUBLIC_API_BASE_URL: process.env.NEXT_PUBLIC_API_BASE_URL,
+    API_BASE_URL: API_BASE_URL
+  });
+  
+  // Test API connectivity
+  const testAPI = async () => {
+    try {
+      const response = await fetch(`${API_BASE_URL.replace('/api', '')}/api/health`);
+      const data = await response.json();
+      console.log('API Health Check:', data);
+    } catch (error) {
+      console.error('API Health Check Failed:', error);
+    }
+  };
+  
+  useEffect(() => {
+    testAPI();
+  }, []);
 
   useEffect(() => {
     const authStatus = sessionStorage.getItem('adminAuthenticated');
@@ -183,6 +254,7 @@ export default function OmnifierAdminDashboard() {
       }
     } catch (error) {
       console.error('Error fetching contacts:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
       setError('Failed to load contacts. Please try again.');
     } finally {
       setLoading(false);
@@ -206,7 +278,17 @@ export default function OmnifierAdminDashboard() {
       const result = await response.json();
       
       if (response.ok && result.success) {
-        // Stats are calculated locally, no need to set state
+        // Update reply stats from API
+        if (result.data.totalReplies !== undefined) {
+          setReplyStats({
+            totalReplies: result.data.totalReplies || 0,
+            sentReplies: result.data.sentReplies || 0,
+            failedReplies: result.data.failedReplies || 0,
+            pendingReplies: result.data.pendingReplies || 0,
+            contactsWithReplies: result.data.contactsWithReplies || 0,
+            replySuccessRate: result.data.replySuccessRate || 0
+          });
+        }
         console.log('Dashboard stats fetched successfully:', result.data);
       } else {
         throw new Error(result.error || 'Failed to fetch stats');
@@ -215,6 +297,24 @@ export default function OmnifierAdminDashboard() {
       console.error('Error fetching dashboard stats:', error);
       // Don't throw error for stats as they're calculated locally
     }
+  };
+
+  // Handle contact selection
+  const handleContactClick = (contact: ContactData) => {
+    setSelectedContact(contact);
+    setShowContactDetails(true);
+  };
+
+  // Handle reply button click
+  const handleReplyClick = (contact: ContactData) => {
+    setSelectedContact(contact);
+    setShowReplyModal(true);
+  };
+
+  // Handle reply sent
+  const handleReplySent = () => {
+    fetchContacts();
+    setShowReplyModal(false);
   };
 
   // Refresh data when search or filter changes
@@ -228,6 +328,15 @@ export default function OmnifierAdminDashboard() {
     e.preventDefault();
     
     try {
+      // Debug logging
+      console.log('API_BASE_URL:', API_BASE_URL);
+      console.log('Full URL:', `${API_BASE_URL}/admin/login`);
+      console.log('Password:', password);
+      console.log('Request payload:', {
+        username: 'admin',
+        password: password
+      });
+      
       // Send login request to backend
       const response = await fetch(`${API_BASE_URL}/admin/login`, {
         method: 'POST',
@@ -240,21 +349,33 @@ export default function OmnifierAdminDashboard() {
         })
       });
 
+      console.log('Response status:', response.status);
+      console.log('Response headers:', Object.fromEntries(response.headers.entries()));
+
       const result = await response.json();
+      console.log('Response data:', result);
 
       if (response.ok && result.success) {
-      setIsAuthenticated(true);
-      setShowPasswordForm(false);
-      sessionStorage.setItem('adminAuthenticated', 'true');
+        console.log('Login successful!');
+        setIsAuthenticated(true);
+        setShowPasswordForm(false);
+        sessionStorage.setItem('adminAuthenticated', 'true');
         sessionStorage.setItem('adminToken', result.data.token);
         fetchContacts();
         fetchDashboardStats();
-    } else {
+      } else {
+        console.error('Login failed:', result);
         alert(result.error || 'Invalid credentials!');
       }
     } catch (error) {
       console.error('Login error:', error);
-      alert('Login failed. Please try again.');
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
+      console.error('Error details:', {
+        message: errorMessage,
+        name: error instanceof Error ? error.name : 'Unknown',
+        stack: error instanceof Error ? error.stack : undefined
+      });
+      alert(`Login failed! Error: ${errorMessage}`);
     }
   };
 
@@ -295,6 +416,7 @@ export default function OmnifierAdminDashboard() {
       }
     } catch (error) {
       console.error('Error marking contact as read:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
       alert('Failed to mark contact as read. Please try again.');
     }
   };
@@ -326,6 +448,7 @@ export default function OmnifierAdminDashboard() {
         }
       } catch (error) {
         console.error('Error deleting contact:', error);
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
         alert('Failed to delete contact. Please try again.');
       }
     }
@@ -379,7 +502,13 @@ export default function OmnifierAdminDashboard() {
     todayContacts,
     weeklyGrowth: 15.8,
     responseTime: "2.5 hours",
-    satisfactionRate: 94.5
+    satisfactionRate: 94.5,
+    totalReplies: replyStats.totalReplies,
+    sentReplies: replyStats.sentReplies,
+    failedReplies: replyStats.failedReplies,
+    pendingReplies: replyStats.pendingReplies,
+    contactsWithReplies: replyStats.contactsWithReplies,
+    replySuccessRate: replyStats.replySuccessRate
   };
 
   if (showPasswordForm) {
@@ -697,18 +826,18 @@ export default function OmnifierAdminDashboard() {
                         trend: 'alert'
                       },
                       {
-                        title: 'Response Time',
-                        value: dashboardStats.responseTime,
-                        change: 'Excellent',
-                        icon: Zap,
+                        title: 'Total Replies',
+                        value: dashboardStats.totalReplies || 0,
+                        change: `${dashboardStats.replySuccessRate || 0}% success`,
+                        icon: Reply,
                         color: 'from-emerald-500/80 to-teal-500/80',
                         trend: 'up'
                       },
                       {
-                        title: 'Satisfaction',
-                        value: `${dashboardStats.satisfactionRate}%`,
-                        change: '+2.5%',
-                        icon: Star,
+                        title: 'Response Time',
+                        value: dashboardStats.responseTime,
+                        change: 'Excellent',
+                        icon: Zap,
                         color: 'from-amber-500/80 to-orange-500/80',
                         trend: 'up'
                       }
@@ -978,14 +1107,36 @@ export default function OmnifierAdminDashboard() {
                             </div>
 
                             <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
-                              {!contact.isRead && (
                                 <motion.button
-                                  onClick={() => markAsRead(contact.id)}
+                                onClick={() => handleReplyClick(contact)}
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.95 }}
+                                className="px-3 lg:px-4 py-2 bg-gradient-to-r from-purple-500/80 to-pink-500/80 text-white rounded-lg lg:rounded-xl hover:from-purple-600/80 hover:to-pink-600/80 transition-all duration-300 flex items-center justify-center gap-1 lg:gap-2 text-xs lg:text-sm backdrop-blur-sm border border-white/20 shadow-lg shadow-purple-500/25"
+                              >
+                                <Send className="w-3 h-3 lg:w-4 lg:h-4" />
+                                <span className="hidden sm:inline">Reply</span>
+                                <span className="sm:hidden">Reply</span>
+                              </motion.button>
+
+                              <motion.button
+                                onClick={() => handleContactClick(contact)}
                                   whileHover={{ scale: 1.05 }}
                                   whileTap={{ scale: 0.95 }}
                                   className="px-3 lg:px-4 py-2 bg-gradient-to-r from-cyan-500/80 to-blue-500/80 text-white rounded-lg lg:rounded-xl hover:from-cyan-600/80 hover:to-blue-600/80 transition-all duration-300 flex items-center justify-center gap-1 lg:gap-2 text-xs lg:text-sm backdrop-blur-sm border border-white/20 shadow-lg shadow-cyan-500/25"
                                 >
                                   <Eye className="w-3 h-3 lg:w-4 lg:h-4" />
+                                <span className="hidden sm:inline">View</span>
+                                <span className="sm:hidden">View</span>
+                              </motion.button>
+
+                              {!contact.isRead && (
+                                <motion.button
+                                  onClick={() => markAsRead(contact.id)}
+                                  whileHover={{ scale: 1.05 }}
+                                  whileTap={{ scale: 0.95 }}
+                                  className="px-3 lg:px-4 py-2 bg-gradient-to-r from-emerald-500/80 to-teal-500/80 text-white rounded-lg lg:rounded-xl hover:from-emerald-600/80 hover:to-teal-600/80 transition-all duration-300 flex items-center justify-center gap-1 lg:gap-2 text-xs lg:text-sm backdrop-blur-sm border border-white/20 shadow-lg shadow-emerald-500/25"
+                                >
+                                  <CheckCircle className="w-3 h-3 lg:w-4 lg:h-4" />
                                   <span className="hidden sm:inline">Mark Read</span>
                                   <span className="sm:hidden">Read</span>
                                 </motion.button>
@@ -1058,7 +1209,7 @@ export default function OmnifierAdminDashboard() {
                       <div className="space-y-4">
                         {[
                           { label: 'Response Rate', value: 98.5, color: 'emerald' },
-                          { label: 'Processing Speed', value: 94.2, color: 'cyan' },
+                          { label: 'Reply Success Rate', value: dashboardStats.replySuccessRate, color: 'cyan' },
                           { label: 'User Satisfaction', value: dashboardStats.satisfactionRate, color: 'purple' },
                           { label: 'System Uptime', value: 99.9, color: 'pink' }
                         ].map((metric, index) => (
@@ -1129,7 +1280,7 @@ export default function OmnifierAdminDashboard() {
                     </motion.div>
                   </div>
 
-                  {/* Advanced Analytics */}
+                  {/* Reply Analytics */}
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -1138,29 +1289,29 @@ export default function OmnifierAdminDashboard() {
                   >
                     <div className="flex items-center gap-3 mb-6">
                       <div className="w-10 h-10 bg-gradient-to-br from-indigo-500/80 to-purple-500/80 rounded-xl flex items-center justify-center backdrop-blur-sm border border-white/20 shadow-lg">
-                        <LineChart className="w-5 h-5 text-white" />
+                        <Reply className="w-5 h-5 text-white" />
                       </div>
                       <div>
-                        <h3 className="text-xl font-bold text-white">Quantum Analytics</h3>
-                        <p className="text-indigo-300/80 text-sm">Deep data analysis and predictions</p>
+                        <h3 className="text-xl font-bold text-white">Reply Analytics</h3>
+                        <p className="text-indigo-300/80 text-sm">Reply performance and statistics</p>
                       </div>
                     </div>
                     
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                       <div className="text-center p-4 bg-white/5 rounded-2xl backdrop-blur-sm border border-white/10">
-                        <div className="text-3xl font-bold text-white mb-2">127%</div>
-                        <div className="text-purple-300/80 text-sm mb-1">Growth Rate</div>
-                        <div className="text-emerald-400 text-xs">↗ +23% vs last month</div>
+                        <div className="text-3xl font-bold text-white mb-2">{dashboardStats.totalReplies}</div>
+                        <div className="text-purple-300/80 text-sm mb-1">Total Replies</div>
+                        <div className="text-emerald-400 text-xs">All time replies sent</div>
                       </div>
                       <div className="text-center p-4 bg-white/5 rounded-2xl backdrop-blur-sm border border-white/10">
-                        <div className="text-3xl font-bold text-white mb-2">4.8s</div>
-                        <div className="text-purple-300/80 text-sm mb-1">Avg Response</div>
-                        <div className="text-cyan-400 text-xs">↗ -1.2s improvement</div>
+                        <div className="text-3xl font-bold text-white mb-2">{dashboardStats.sentReplies}</div>
+                        <div className="text-purple-300/80 text-sm mb-1">Successful</div>
+                        <div className="text-cyan-400 text-xs">Successfully delivered</div>
                       </div>
                       <div className="text-center p-4 bg-white/5 rounded-2xl backdrop-blur-sm border border-white/10">
-                        <div className="text-3xl font-bold text-white mb-2">96.2%</div>
+                        <div className="text-3xl font-bold text-white mb-2">{dashboardStats.replySuccessRate}%</div>
                         <div className="text-purple-300/80 text-sm mb-1">Success Rate</div>
-                        <div className="text-pink-400 text-xs">↗ +2.1% this week</div>
+                        <div className="text-pink-400 text-xs">Reply delivery success</div>
                       </div>
                     </div>
                   </motion.div>
@@ -1170,6 +1321,24 @@ export default function OmnifierAdminDashboard() {
           </div>
         </div>
       </div>
+
+      {/* Contact Details Modal */}
+      <ContactDetails
+        isOpen={showContactDetails}
+        onClose={() => setShowContactDetails(false)}
+        contact={selectedContact}
+        onContactUpdate={fetchContacts}
+        onDelete={deleteContact}
+        onMarkAsRead={markAsRead}
+      />
+
+      {/* Reply Modal */}
+      <ReplyModal
+        isOpen={showReplyModal}
+        onClose={() => setShowReplyModal(false)}
+        contact={selectedContact}
+        onReplySent={handleReplySent}
+      />
     </div>
   );
 }

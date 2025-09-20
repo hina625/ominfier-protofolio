@@ -471,8 +471,8 @@ export default function AppDevelopment() {
               
               {/* Action Buttons */}
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Link href="/contact" passHref legacyBehavior>
-                  <motion.a
+                <Link href="/contact">
+                  <motion.div
                     whileHover={{ scale: 1.05, y: -2 }}
                     whileTap={{ scale: 0.95 }}
                     className="group relative px-8 py-4 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-semibold rounded-full shadow-2xl overflow-hidden cursor-pointer"
@@ -483,11 +483,11 @@ export default function AppDevelopment() {
                       Start Development
                       <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
                     </div>
-                  </motion.a>
+                  </motion.div>
                 </Link>
 
-                <Link href="/portfolio" passHref legacyBehavior>
-                  <motion.a
+                <Link href="/portfolio">
+                  <motion.div
                     whileHover={{ scale: 1.05, y: -2 }}
                     whileTap={{ scale: 0.95 }}
                     className="group px-8 py-4 bg-transparent border-2 border-purple-400 text-purple-400 font-semibold rounded-full hover:bg-purple-400/10 transition-colors duration-300 cursor-pointer"
@@ -496,7 +496,7 @@ export default function AppDevelopment() {
                       <Play className="w-5 h-5" />
                       View Portfolio
                     </div>
-                  </motion.a>
+                  </motion.div>
                 </Link>
               </div>
             </div>

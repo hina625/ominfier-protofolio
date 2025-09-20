@@ -59,7 +59,11 @@ export default function ContactPage() {
     
     try {
       // Get API URL from environment variable
-      const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:5000/api';
+      // API Base URL - Auto-detect environment
+      const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 
+        (typeof window !== 'undefined' && window.location.hostname === 'ominfier-protofolio.vercel.app' 
+          ? 'https://your-backend-url.herokuapp.com/api'  // Replace with your actual backend URL
+          : 'http://localhost:5000/api');
       
       // Send data to API
       const response = await fetch(`${API_BASE_URL}/contacts`, {

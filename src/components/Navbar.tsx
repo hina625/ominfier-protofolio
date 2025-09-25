@@ -29,8 +29,7 @@ import {
   User,
   Briefcase,
   MessageCircle,
-  Settings,
-  Shield
+  Settings
 } from "lucide-react";
 
 export default function Navbar() {
@@ -146,23 +145,6 @@ export default function Navbar() {
                 <span className="nav-underline" />
               </motion.a>
             ))}
-            
-            {/* Admin Link */}
-            <motion.a
-              href="/admin"
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.5 }}
-              whileHover={{ y: -2 }}
-              className="relative flex items-center gap-2 text-orange-300 hover:text-orange-200 transition-colors duration-300 group nav-link focus:outline-none"
-              tabIndex={0}
-            >
-              <span className="group-hover:scale-110 transition-transform duration-300">
-                <Shield className="w-4 h-4" />
-              </span>
-              <span className="font-medium">Admin</span>
-              <span className="nav-underline" />
-            </motion.a>
           </div>
 
           {/* CTA Button */}
@@ -231,24 +213,6 @@ export default function Navbar() {
                   <span className="font-medium">{item.name}</span>
                 </motion.a>
               ))}
-              
-              {/* Admin Link for Mobile */}
-              <motion.a
-                href="/admin"
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ 
-                  opacity: 1,
-                  x: 0
-                }}
-                transition={{ duration: 0.3, delay: 0.4 }}
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="flex items-center gap-3 text-orange-300 hover:text-orange-200 transition-colors duration-300 py-3 px-4 rounded-lg hover:bg-white/5 mx-2"
-              >
-                <span className="text-orange-400">
-                  <Shield className="w-4 h-4" />
-                </span>
-                <span className="font-medium">Admin</span>
-              </motion.a>
               
               <motion.a
                 href="/login"
